@@ -1,15 +1,26 @@
 "use client";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 import { CheckCircle2, Calendar, MapPin, ArrowRight } from "lucide-react";
-import { getDoctorById } from "@/lib/data/doctors";
+import { useApi } from "@/lib/api";
 import styles from "./confirmed.module.css";
+import { Suspense } from "react";
 
-export default function BookingConfirmedPage() {
+function ConfirmationContent() {
   const { id } = useParams() as { id: string };
-  const doctor = getDoctorById(id);
+  const searchParams = useSearchParams();
+  const { data: doctor, loading } = useApi<any>(`/doctors/${id}`);
+  
+  const date = searchParams.get('date') || "Today";
+  const time = searchParams.get('time') || "scheduled time";
 
-  if (!doctor) return null;
+  if (loading) return <div style={{ padding: 60, textAlign: 'center' }}>Confirming appointment...</div>;
+  if (!doctor) return (
+    <div style={{ padding: 60, textAlign: 'center' }}>
+      <p>Error finding doctor info, but your booking was successful!</p>
+      <Link href="/patient/appointments" className="btn btn-primary" style={{ marginTop: 20 }}>View Appointments</Link>
+    </div>
+  );
 
   return (
     <div className={styles.container}>
@@ -23,9 +34,9 @@ export default function BookingConfirmedPage() {
 
         <div className={styles.card}>
           <div className={styles.docInfo}>
-            <img src={doctor.avatar} alt={doctor.name} className={styles.avatar} />
+            <img src={doctor.user?.avatar || "https://api.dicebear.com/7.x/personas/svg?seed=dr"} alt={doctor.user?.name} className={styles.avatar} />
             <div>
-              <p className={styles.name}>{doctor.name}</p>
+              <p className={styles.name}>{doctor.user?.name}</p>
               <p className={styles.specialty}>{doctor.specialty}</p>
             </div>
           </div>
@@ -33,7 +44,7 @@ export default function BookingConfirmedPage() {
           <div className={styles.details}>
             <div className={styles.detailRow}>
               <Calendar size={18} color="var(--blue-primary)" />
-              <span>Tomorrow at {doctor.availableSlots.tomorrow[0] || "10:00 AM"}</span>
+              <span>{date} at {time}</span>
             </div>
             <div className={styles.detailRow}>
               <MapPin size={18} color="var(--blue-primary)" />
@@ -52,5 +63,13 @@ export default function BookingConfirmedPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BookingConfirmedPage() {
+  return (
+    <Suspense fallback={<div style={{ padding: 60, textAlign: 'center' }}>Loading confirmation...</div>}>
+      <ConfirmationContent />
+    </Suspense>
   );
 }

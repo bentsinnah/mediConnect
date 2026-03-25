@@ -67,7 +67,7 @@ function PaymentContent() {
     } catch (err: any) {
       console.error('Appointment creation error (non-fatal):', err);
     } finally {
-      window.location.href = `/patient/doctors/${docId}/confirmed`;
+      window.location.href = `/patient/doctors/${docId}/confirmed?date=${date}&time=${time}`;
     }
   };
 
