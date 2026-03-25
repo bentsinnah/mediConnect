@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const isProd = process.env.NODE_ENV === 'production';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || (isProd ? 'https://mediconnect-s11t.onrender.com/api' : 'http://localhost:5000/api');
 
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
