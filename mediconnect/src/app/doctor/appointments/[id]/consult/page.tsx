@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useSpeechToText } from "@/hooks/useSpeechToText";
 import { fetchApi, useApi } from "@/lib/api";
 import { useParams } from "next/navigation";
+import { useToast } from "@/components/Toast";
 
 export default function DoctorConsultationPage() {
   const { id } = useParams() as { id: string };
