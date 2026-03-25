@@ -14,8 +14,8 @@ function LoginForm() {
   const dashboardHref = role === "doctor" ? "/doctor/dashboard" : "/patient/dashboard";
   const signupHref = role === "doctor" ? "/signup/doctor" : "/signup/patient";
 
-  const [email, setEmail] = useState(role === "doctor" ? "dr.ogundimu@mediconnect.ng" : "grace.james@mediconnect.ng");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
