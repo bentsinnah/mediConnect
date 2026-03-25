@@ -6,6 +6,7 @@ import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import styles from "./login.module.css";
 import { Suspense, useState } from "react";
 import { fetchApi } from "@/lib/api";
+import { useToast } from "@/components/Toast";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -16,13 +17,17 @@ function LoginForm() {
   const [email, setEmail] = useState(role === "doctor" ? "dr.ogundimu@mediconnect.ng" : "grace.james@mediconnect.ng");
   const [password, setPassword] = useState("password123");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email || !email.includes('@')) {
+      return toast.error("Please enter a valid email address.");
+    }
+    
     setLoading(true);
-    setError("");
     try {
       const res = await fetchApi('/auth/login', {
         method: 'POST',
@@ -30,9 +35,10 @@ function LoginForm() {
       });
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res.user));
-      window.location.href = dashboardHref;
+      toast.success("Login successful! Welcome back.");
+      setTimeout(() => window.location.href = dashboardHref, 1000);
     } catch (err: any) {
-      setError(err.message);
+      toast.error(err.message || "Invalid email or password.");
     } finally {
       setLoading(false);
     }
@@ -52,14 +58,12 @@ function LoginForm() {
       </div>
 
       <form className={styles.form} onSubmit={handleLogin}>
-        {error && <div className="badge badge-red" style={{ marginBottom: 16, width: '100%' }}>{error}</div>}
-
         <div className="input-icon-wrap">
           <Mail size={18} className="icon-left" />
           <input 
             type="email" 
             className="input-field" 
-            placeholder="Email Address" 
+            placeholder={role === "doctor" ? "dr.sarah@hospital.com" : "john.doe@example.com"}
             required 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -95,8 +99,22 @@ function LoginForm() {
           </button>
         </div>
 
-        <div className={styles.forgot}>
-          <Link href="/forgot-password" className={styles.link}>Forgot Password?</Link>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 4, marginBottom: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <input 
+              type="checkbox" 
+              id="remember" 
+              checked={rememberMe} 
+              onChange={(e) => setRememberMe(e.target.checked)} 
+              style={{ width: 16, height: 16, cursor: 'pointer' }}
+            />
+            <label htmlFor="remember" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+              Remember me
+            </label>
+          </div>
+          <div className={styles.forgot}>
+            <Link href="/forgot-password" className={styles.link}>Forgot Password?</Link>
+          </div>
         </div>
 
         <button type="submit" disabled={loading} className={`btn btn-lg ${role === "doctor" ? "btn-green" : "btn-primary"}`} style={{ width: '100%', padding: '16px' }}>
