@@ -42,8 +42,8 @@ export default function PatientSignupPage() {
       });
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res.user));
-      toast.success("Account successfully created! Let's get started.");
-      setTimeout(() => window.location.href = "/onboarding/patient", 1000);
+      toast.success("Account created! Please check your email.");
+      setTimeout(() => window.location.href = `/verify-email?email=${encodeURIComponent(email)}`, 1000);
     } catch (err: any) {
       toast.error(err.message || "Account creation failed.");
     } finally {

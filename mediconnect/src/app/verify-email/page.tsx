@@ -11,6 +11,7 @@ import styles from "./verify.module.css";
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email") || "";
+  
   const [email, setEmail] = useState(emailParam);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);

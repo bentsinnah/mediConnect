@@ -86,10 +86,10 @@ router.post('/register', async (req, res) => {
       });
     } catch (mailErr) {
       console.error('[Register] Failed to send verification email:', mailErr.message);
-      // Don't fail the registration if email fails
     }
 
     const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    
     res.status(201).json({
       token,
       user: { id: user.id, name: user.name, email: user.email, role: user.role, avatar: user.avatar, isVerified: false },

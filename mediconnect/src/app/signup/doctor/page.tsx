@@ -40,8 +40,8 @@ export default function DoctorSignupPage() {
       });
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res.user));
-      toast.success("Account successfully created! Redirecting...");
-      setTimeout(() => window.location.href = "/onboarding/doctor", 1000);
+      toast.success("Account created! Please check your email.");
+      setTimeout(() => window.location.href = `/verify-email?email=${encodeURIComponent(email)}`, 1000);
     } catch (err: any) {
       toast.error(err.message || "Failed to create account. Please try again.");
     } finally {
