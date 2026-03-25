@@ -14,6 +14,7 @@ export default function DoctorConsultationPage() {
   const [notes, setNotes] = useState("");
   const [diagnosis, setDiagnosis] = useState("");
   const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
   const [prescriptions, setPrescriptions] = useState([{ name: "", dosage: "", frequency: "", duration: "" }]);
 
   const { isListening, toggleListening } = useSpeechToText((transcript: string) => {
@@ -48,10 +49,10 @@ export default function DoctorConsultationPage() {
           medications: validPrescriptions
         })
       });
-      alert("Consultation saved successfully!");
-      window.location.href = "/doctor/dashboard";
+      toast.success("Consultation saved successfully! Appointment marked as completed.");
+      setTimeout(() => window.location.href = "/doctor/dashboard", 1000);
     } catch (err: any) {
-      alert("Failed to save: " + err.message);
+      toast.error("Failed to save: " + err.message);
     } finally {
       setSaving(false);
     }

@@ -16,7 +16,7 @@ export default function DoctorDashboard() {
   }, []);
 
   const todayStr = new Date().toDateString();
-  const todayAppts = (dbAppointments || []).filter(a => new Date(a.date).toDateString() === todayStr);
+  const todayAppts = (dbAppointments || []).filter(a => a.status === 'upcoming' && new Date(a.date).toDateString() === todayStr);
   const otherUpcoming = (dbAppointments || []).filter(a => a.status === 'upcoming' && new Date(a.date).toDateString() !== todayStr);
   
   const displayAppts = todayAppts.length > 0 ? todayAppts : otherUpcoming;
