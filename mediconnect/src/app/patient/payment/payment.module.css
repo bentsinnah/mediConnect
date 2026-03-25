@@ -1,0 +1,91 @@
+.summaryCard {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 32px;
+  border: 1px solid var(--border-color);
+}
+
+.summaryLabel {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.summaryAmount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--blue-primary);
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+
+.summaryDesc {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.methods {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.methodCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.methodCard.active {
+  border-color: var(--blue-primary);
+  background: var(--blue-light);
+}
+
+.methodIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.methodInfo {
+  flex: 1;
+}
+
+.methodInfo h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.methodInfo p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.radio {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.methodCard.active .radio {
+  border: none;
+}

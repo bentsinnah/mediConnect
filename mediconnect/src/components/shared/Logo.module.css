@@ -1,0 +1,20 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.sm { font-size: 1.1rem; }
+.md { font-size: 1.5rem; }
+.lg { font-size: 2rem; }
+
+.medi { color: var(--blue-primary); }
+.connect { color: var(--green-accent); }
+.cross { 
+  color: #F97316;
+  font-size: 0.7em;
+  vertical-align: super;
+  margin: 0 1px;
+}

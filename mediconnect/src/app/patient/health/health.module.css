@@ -1,0 +1,257 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.assessmentCard {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  background: linear-gradient(135deg, white 0%, hsla(210, 100%, 98%, 1) 100%);
+}
+
+.assessmentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mainCondition {
+  margin-bottom: 16px;
+}
+
+.conditionLabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.conditionName {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--blue-primary);
+}
+
+.adviceBox {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 4px solid var(--blue-primary);
+  margin-bottom: 20px;
+}
+
+.adviceTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.adviceText {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.doctorBadge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.docMiniAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.docName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.docSpec {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.backBtn, .downloadBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.chartCard {
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.titleWrap h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.iconCirc {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.redCirc { background: #FEE2E2; color: #EF4444; }
+.blueCirc { background: #DBEAFE; color: #3B82F6; }
+.purpleCirc { background: #F3E8FF; color: #A855F7; }
+.orangeCirc { background: #FFEDD5; color: #F97316; }
+
+.addBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-page);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.bigVal {
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.secVal {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.smallVal {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.waterTracker {
+  display: flex;
+  gap: 4px;
+}
+
+.waterPill {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--bg-page);
+}
+
+.waterPill.waterActive {
+  background: var(--blue-primary);
+}
+
+.sleepOpts {
+  display: flex;
+  gap: 4px;
+}
+
+.sleepOpt {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: var(--bg-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sleepOpt.sleepActive {
+  background: #E879F9;
+  color: white;
+}
+
+.tipsSection {
+  margin-top: 32px;
+  margin-bottom: 40px;
+}
+
+.tipsTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.tipsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tipCard {
+  background: white;
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
