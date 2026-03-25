@@ -34,6 +34,9 @@ export default function PatientDashboard() {
     }
   }, [userProfile]);
 
+  const { data: dbAppointments } = useApi<any[]>('/appointments');
+  const upcomingAppt = (dbAppointments || []).find(a => a.status === 'upcoming');
+
   const displayName = userProfile?.name || user?.name || "Patient";
 
   return (
@@ -106,6 +109,27 @@ export default function PatientDashboard() {
           }}
         />
       </div>
+
+      {upcomingAppt && (
+        <div className={styles.section} style={{ marginTop: 24 }}>
+          <div className="section-header">
+            <h2 className="section-title">Upcoming Appointment</h2>
+            <Link href="/patient/appointments" className="section-link">View all &gt;</Link>
+          </div>
+          <div className="card glass-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', background: 'linear-gradient(135deg, var(--blue-primary), #3B82F6)', color: 'white', border: 'none' }}>
+            <div className={styles.iconCircle} style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}>
+              <Activity size={24} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: 4 }}>{upcomingAppt.doctorName}</h3>
+              <p style={{ fontSize: '0.8rem', opacity: 0.9 }}>{upcomingAppt.date} · {upcomingAppt.time}</p>
+            </div>
+            <Link href="/patient/appointments" className="btn btn-sm" style={{ background: 'white', color: 'var(--blue-primary)', fontWeight: 700 }}>
+              Details
+            </Link>
+          </div>
+        </div>
+      )}
 
       <div className={styles.quickActions}>
         <Link href="/patient/doctors" className={styles.actionCard}>

@@ -15,10 +15,12 @@ export default function DoctorDashboard() {
     if (rawUser) setUser(JSON.parse(rawUser));
   }, []);
 
-  const todayAppts = (dbAppointments || []).filter(a => {
-    const isToday = new Date(a.date).toDateString() === new Date().toDateString();
-    return isToday || a.status === "upcoming"; // Fallback demo logic assuming upcoming are today
-  });
+  const todayStr = new Date().toDateString();
+  const todayAppts = (dbAppointments || []).filter(a => new Date(a.date).toDateString() === todayStr);
+  const otherUpcoming = (dbAppointments || []).filter(a => a.status === 'upcoming' && new Date(a.date).toDateString() !== todayStr);
+  
+  const displayAppts = todayAppts.length > 0 ? todayAppts : otherUpcoming;
+  const sectionTitle = todayAppts.length > 0 ? "Today's Appointments" : "Upcoming Appointments";
 
   return (
     <>
@@ -46,58 +48,58 @@ export default function DoctorDashboard() {
           <div className={styles.statTop}>
             <div className={styles.statIconWrap} style={{ background: 'rgba(255,255,255,0.2)' }}><Users size={20} color="white" /></div>
           </div>
-          <p className={styles.statValue}>{todayAppts.length}</p>
-          <p className={styles.statLabel} style={{ color: 'rgba(255,255,255,0.9)' }}>Today's Patients</p>
+          <p className={styles.statValue}>{displayAppts.length}</p>
+          <p className={styles.statLabel} style={{ color: 'rgba(255,255,255,0.9)' }}>{sectionTitle.split("'")[0]} Patients</p>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statTop}>
             <div className={styles.statIconWrap} style={{ background: 'var(--green-light)' }}><Wallet size={20} color="var(--green-dark)" /></div>
           </div>
-          <p className={styles.statValue} style={{ color: 'var(--text-primary)' }}>₦{todayAppts.length * 15}k</p>
+          <p className={styles.statValue} style={{ color: 'var(--text-primary)' }}>₦{displayAppts.length * 15}k</p>
           <p className={styles.statLabel}>Est. Earnings</p>
         </div>
       </div>
 
       <div className={styles.section}>
         <div className="section-header">
-          <h2 className="section-title">Today's Appointments</h2>
+          <h2 className="section-title">{sectionTitle}</h2>
           <Link href="/doctor/appointments" className="section-link" style={{ color: 'var(--green-primary)' }}>See all &gt;</Link>
         </div>
 
         <div className={styles.list}>
           {loading ? (
             <p style={{ textAlign: 'center', padding: 20 }}>Loading appointments...</p>
-          ) : todayAppts.length > 0 ? (
-            todayAppts.map((appt, i) => (
+          ) : displayAppts.length > 0 ? (
+            displayAppts.map((appt, i) => (
               <div key={appt.id} className={styles.apptCard}>
                 <div className={styles.apptTimeWrap}>
-                  <span className={styles.apptTime}>{appt.time.replace("Today ", "")}</span>
+                  <span className={styles.apptTime}>{appt.time}</span>
                   <div className={styles.timeLine}></div>
                 </div>
                 <div className={`${styles.apptContent} ${i === 0 ? 'glass-card' : ''}`} style={i === 0 ? { border: '1.5px solid var(--green-primary)' } : {}}>
                   <div className={styles.patientInfo}>
                      <div style={{ position: 'relative' }}>
-                      <Avatar src={appt.patientAvatar || "https://api.dicebear.com/7.x/personas/svg?seed=pat"} name={appt.patientName} size={48} className={styles.patientAvatar} />
-                      {i === 0 && <span style={{ position: 'absolute', top: -4, right: -4, background: 'var(--green-primary)', color: 'white', fontSize: '0.6rem', padding: '2px 6px', borderRadius: 4, fontWeight: 700 }}>LIVE</span>}
+                      <Avatar src={appt.patientAvatar || `https://api.dicebear.com/7.x/initials/svg?seed=${appt.patientName}`} name={appt.patientName} size={48} className={styles.patientAvatar} />
+                      {i === 0 && todayAppts.length > 0 && <span style={{ position: 'absolute', top: -4, right: -4, background: 'var(--green-primary)', color: 'white', fontSize: '0.6rem', padding: '2px 6px', borderRadius: 4, fontWeight: 700 }}>LIVE</span>}
                     </div>
                     <div style={{ flex: 1 }}>
                       <p className={styles.patientName}>{appt.patientName}</p>
-                      <p className={styles.apptType}>{appt.type || "General Checkup"} · {appt.duration || "30m"}</p>
+                      <p className={styles.apptType}>{appt.type === 'virtual' ? "🎥 Virtual" : "🏥 In-Person"} · {appt.date}</p>
                     </div>
                   </div>
-                  {i === 0 ? (
+                  {i === 0 && todayAppts.length > 0 ? (
                     <Link href={`/doctor/appointments/${appt.id}/consult`} className={`btn btn-green ${styles.startBtn}`}>
                       Start Consultation
                     </Link>
                   ) : (
-                    <button className={`btn ${styles.waitBtn}`} disabled>Waiting</button>
+                    <button className={`btn ${styles.waitBtn}`} style={{ opacity: 0.6 }} disabled>Upcoming</button>
                   )}
                 </div>
               </div>
             ))
           ) : (
-            <p style={{ textAlign: 'center', padding: 20 }}>No scheduled appointments today.</p>
+            <p style={{ textAlign: 'center', padding: 20 }}>No scheduled appointments found.</p>
           )}
         </div>
       </div>

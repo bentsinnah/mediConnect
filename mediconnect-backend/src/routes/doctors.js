@@ -31,13 +31,15 @@ router.get('/', async (req, res) => {
 
     // Transform response to match frontend expectations
     const formatted = doctors.map(d => {
-      // Group slots by day
+      const today = new Date().getDay();
+      const tomorrow = (today + 1) % 7;
+      const dayAfter = (today + 2) % 7;
+
       const slots = { today: [], tomorrow: [], dayAfter: [] };
       d.availabilitySlots.forEach(s => {
-        // Mock logic: map day 0 to today, 1 to tomorrow etc for simplicity
-        if (s.dayOfWeek === 0) slots.today.push(s.startTime);
-        if (s.dayOfWeek === 1) slots.tomorrow.push(s.startTime);
-        if (s.dayOfWeek === 2) slots.dayAfter.push(s.startTime);
+        if (s.dayOfWeek === today) slots.today.push(s.startTime);
+        else if (s.dayOfWeek === tomorrow) slots.tomorrow.push(s.startTime);
+        else if (s.dayOfWeek === dayAfter) slots.dayAfter.push(s.startTime);
       });
 
       return {
