@@ -139,7 +139,7 @@ export default function DoctorAppointmentsPage() {
                 </div>
               )}
               {appt.status === 'completed' && appt.consultationId && (
-                <Link href={`/doctor/appointments/${appt.id}/consult`} className="btn btn-outline" style={{ width: '100%', padding: 12, marginTop: 8, textAlign: 'center' }}>
+                <Link href={`/doctor/appointments/${appt.id}/view`} className="btn btn-outline" style={{ width: '100%', padding: 12, marginTop: 8, textAlign: 'center' }}>
                   <ChevronRight size={16} /> View Consultation
                 </Link>
               )}

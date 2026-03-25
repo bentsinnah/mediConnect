@@ -44,7 +44,6 @@ router.get('/', authMiddleware(), async (req, res) => {
       doctorAvatar: apt.doctor.avatar,
       patientName: apt.patient.name,
       patientAvatar: apt.patient.avatar,
-      patientId: apt.patient.id,
       patientEmail: apt.patient.email,
       consultationId: apt.consultation?.id,
       diagnosis: apt.consultation?.diagnosis,

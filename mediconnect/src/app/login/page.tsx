@@ -35,8 +35,18 @@ function LoginForm() {
       });
       localStorage.setItem('token', res.token);
       localStorage.setItem('user', JSON.stringify(res.user));
+
+      // If not verified, redirect to verification screen
+      if (res.user.isVerified === false) {
+        toast.success("Account found! Please verify your email first.");
+        setTimeout(() => window.location.href = `/verify-email?email=${encodeURIComponent(email)}`, 800);
+        return;
+      }
+
       toast.success("Login successful! Welcome back.");
-      setTimeout(() => window.location.href = dashboardHref, 1000);
+      // Use actual role from API, not URL param
+      const destination = res.user.role === 'DOCTOR' ? '/doctor/dashboard' : '/patient/dashboard';
+      setTimeout(() => window.location.href = destination, 800);
     } catch (err: any) {
       toast.error(err.message || "Invalid email or password.");
     } finally {

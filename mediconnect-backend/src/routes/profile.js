@@ -23,26 +23,40 @@ router.get('/', authMiddleware(), async (req, res) => {
 router.patch('/', authMiddleware(), async (req, res) => {
   try {
     const { name, phone, avatar, ...profileData } = req.body;
-    
+
+    // Only include fields that are explicitly passed to avoid overwriting with undefined
+    const userUpdateData = {};
+    if (name !== undefined) userUpdateData.name = name;
+    if (phone !== undefined) userUpdateData.phone = phone;
+    if (avatar !== undefined) userUpdateData.avatar = avatar;
+
     const user = await prisma.user.update({
       where: { id: req.user.id },
-      data: { name, phone, avatar }
+      data: userUpdateData
     });
 
-    if (req.user.role === 'DOCTOR') {
-      await prisma.doctorProfile.update({
-        where: { userId: req.user.id },
-        data: profileData
-      });
-    } else {
-      await prisma.patientProfile.update({
-        where: { userId: req.user.id },
-        data: profileData
-      });
+    // Remove undefined keys from profileData
+    const cleanProfileData = Object.fromEntries(
+      Object.entries(profileData).filter(([_, v]) => v !== undefined)
+    );
+
+    if (Object.keys(cleanProfileData).length > 0) {
+      if (req.user.role === 'DOCTOR') {
+        await prisma.doctorProfile.update({
+          where: { userId: req.user.id },
+          data: cleanProfileData
+        });
+      } else {
+        await prisma.patientProfile.update({
+          where: { userId: req.user.id },
+          data: cleanProfileData
+        });
+      }
     }
 
     res.json({ success: true, user });
   } catch (error) {
+    console.error('[Profile PATCH]', error);
     res.status(500).json({ error: 'Failed to update profile' });
   }
 });
