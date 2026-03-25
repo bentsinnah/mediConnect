@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cmn5b40jj0016uyus3bo2por9",
+    "userId": "cmn5b3iad0012uyus2n54hali",
+    "type": "WEIGHT",
+    "value": 120,
+    "label": null,
+    "recordedAt": "2026-03-25T00:29:57.824Z"
+  },
+  {
+    "id": "cmn5eilki0001uy8gl4nbdumb",
+    "userId": "cmn5a8bf10003uy048ujd05g2",
+    "type": "BP_SYSTOLIC",
+    "value": 120,
+    "label": null,
+    "recordedAt": "2026-03-25T02:05:16.793Z"
+  },
+  {
+    "id": "cmn5eim1s0003uy8g572shaph",
+    "userId": "cmn5a8bf10003uy048ujd05g2",
+    "type": "BP_DIASTOLIC",
+    "value": 80,
+    "label": null,
+    "recordedAt": "2026-03-25T02:05:17.728Z"
+  },
+  {
+    "id": "cmn5eima90005uy8g7y5vidpy",
+    "userId": "cmn5a8bf10003uy048ujd05g2",
+    "type": "TEMPERATURE",
+    "value": 37,
+    "label": null,
+    "recordedAt": "2026-03-25T02:05:18.033Z"
+  },
+  {
+    "id": "cmn5eimit0007uy8gonxbr3vg",
+    "userId": "cmn5a8bf10003uy048ujd05g2",
+    "type": "WEIGHT",
+    "value": 70,
+    "label": null,
+    "recordedAt": "2026-03-25T02:05:18.341Z"
+  },
+  {
+    "id": "cmn5ez4fw0001uypcpra6p1x5",
+    "userId": "cmn5b3iad0012uyus2n54hali",
+    "type": "BP_SYSTOLIC",
+    "value": 120,
+    "label": null,
+    "recordedAt": "2026-03-25T02:18:07.717Z"
+  },
+  {
+    "id": "cmn5ez5e90005uypc8i4a515f",
+    "userId": "cmn5b3iad0012uyus2n54hali",
+    "type": "BP_DIASTOLIC",
+    "value": 80,
+    "label": null,
+    "recordedAt": "2026-03-25T02:18:09.297Z"
+  },
+  {
+    "id": "cmn5ez5uh0009uypcyaw35tia",
+    "userId": "cmn5b3iad0012uyus2n54hali",
+    "type": "TEMPERATURE",
+    "value": 37,
+    "label": null,
+    "recordedAt": "2026-03-25T02:18:09.881Z"
+  },
+  {
+    "id": "cmn5ez6a0000duypc1vki4lir",
+    "userId": "cmn5b3iad0012uyus2n54hali",
+    "type": "WEIGHT",
+    "value": 70,
+    "label": null,
+    "recordedAt": "2026-03-25T02:18:10.440Z"
+  }
+]

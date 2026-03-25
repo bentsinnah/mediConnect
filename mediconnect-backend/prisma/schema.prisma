@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PATIENT
+  DOCTOR
+}
+
+enum AppointmentStatus {
+  upcoming
+  completed
+  cancelled
+}
+
+enum AppointmentType {
+  in_person
+  virtual
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
+
+enum MetricType {
+  TEMPERATURE
+  BP_SYSTOLIC
+  BP_DIASTOLIC
+  WEIGHT
+  WATER
+  SLEEP
+  HEART_RATE
+  BLOOD_SUGAR
+}
+
+enum MedicalEntryType {
+  CONDITION
+  ALLERGY
+  MEDICATION
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role
+  avatar    String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  doctorProfile   DoctorProfile?
+  patientProfile  PatientProfile?
+  appointments    Appointment[]  @relation("PatientAppointments")
+  doctorAppointments Appointment[] @relation("DoctorAppointments")
+  notifications   Notification[]
+  healthMetrics   HealthMetric[]
+  medicalHistory  MedicalHistory[]
+  symptomLogs     SymptomLog[]
+}
+
+model DoctorProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  specialty      String
+  clinic         String
+  clinicAddress  String?
+  about          String?
+  rating         Float    @default(4.5)
+  reviews        Int      @default(0)
+  fee            Int      @default(15000)
+  languages      String[] @default(["English"])
+  distance       String   @default("1.2km")
+  isAvailable    Boolean  @default(true)
+  virtualConsult Boolean  @default(false)
+  consultationType String @default("BOTH") // IN_PERSON, VIRTUAL, or BOTH
+  consultations  Consultation[]
+  transactions   Transaction[]
+  availabilitySlots AvailabilitySlot[]
+  createdAt      DateTime @default(now())
+}
+
+model AvailabilitySlot {
+  id          String   @id @default(cuid())
+  doctorProfile  DoctorProfile @relation(fields: [doctorProfileId], references: [id], onDelete: Cascade)
+  doctorProfileId String
+  dayOfWeek   Int      // 0=Sun, 1=Mon ... 6=Sat
+  startTime   String   // e.g. "09:00"
+  endTime     String   // e.g. "17:00"
+  isActive    Boolean  @default(true)
+}
+
+model PatientProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bloodGroup  String?
+  weight      String?
+  height      String?
+  dateOfBirth String?
+  address     String?
+  createdAt   DateTime @default(now())
+}
+
+model Appointment {
+  id           String   @id @default(cuid())
+  patientId    String
+  patient      User     @relation("PatientAppointments", fields: [patientId], references: [id])
+  doctorId     String
+  doctor       User     @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  date         String
+  time         String
+  clinic       String
+  type         AppointmentType @default(in_person)
+  duration     String   @default("30 mins")
+  status       AppointmentStatus @default(upcoming)
+  consultation Consultation?
+  createdAt    DateTime @default(now())
+}
+
+model Consultation {
+  id             String   @id @default(cuid())
+  appointmentId  String   @unique
+  appointment    Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  doctorProfile  DoctorProfile? @relation(fields: [doctorProfileId], references: [id])
+  doctorProfileId String?
+  diagnosis      String
+  notes          String
+  followUpDate   String?
+  prescriptions  Prescription[]
+  createdAt      DateTime @default(now())
+}
+
+model Prescription {
+  id             String   @id @default(cuid())
+  consultationId String
+  consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  medicationName String
+  dosage         String
+  frequency      String
+  duration       String
+  createdAt      DateTime @default(now())
+}
+
+model HealthMetric {
+  id         String     @id @default(cuid())
+  userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       MetricType
+  value      Float
+  label      String?    // e.g. "systolic", "diastolic"
+  recordedAt DateTime   @default(now())
+}
+
+model MedicalHistory {
+  id           String           @id @default(cuid())
+  userId       String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         MedicalEntryType
+  name         String
+  details      String?
+  severity     String?
+  diagnosedAt  String?
+  isActive     Boolean          @default(true)
+  createdAt    DateTime         @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id              String          @id @default(cuid())
+  doctorProfileId String
+  doctorProfile   DoctorProfile   @relation(fields: [doctorProfileId], references: [id], onDelete: Cascade)
+  description     String
+  amount          Int
+  type            TransactionType
+  createdAt       DateTime        @default(now())
+}
+
+model SymptomLog {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symptoms         String
+  aiDiagnosis      String?
+  suggestedSpecialty String?
+  createdAt        DateTime @default(now())
+}
